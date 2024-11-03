@@ -1,3 +1,4 @@
+#https://www.hackerrank.com/challenges/the-minion-game/problem?isFullScreen=true
 def minion_game(string):
     vowels = ["A", "E", "I", "O", "U"]
 
