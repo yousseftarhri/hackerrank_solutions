@@ -1,11 +1,11 @@
 # !/bin/python3
 #https://www.hackerrank.com/challenges/x-and-his-shots/problem?isFullScreen=true
+
 import math
 import os
 import random
 import re
 import sys
-
 
 #
 # Complete the 'solve' function below.
@@ -17,22 +17,29 @@ import sys
 #
 
 def solve(shots, players):
-    # Write your code here
-    shots.sort(key=lambda x: x[0])
-    players.sort(key=lambda x: x[0])
-    s = 0
-    for p_start, p_end in players:
-        for s_start, s_end in shots:
+    FIELD = int(1e5)
 
-            if p_start > s_end:
-                continue
-            elif p_end < s_start:
-                break
-            else:
-                s = s + 1
-    return s
+    # Initialize opening and closing arrays
+    opening = [0] * FIELD
+    closing = [0] * FIELD
+
+    # Read ranges for shots
+    for a,b in shots:
+        opening[a] += 1
+        closing[b + 1] += 1
+
+    # Compute cumulative sums for opening and closing arrays
+    for i in range(1, FIELD):
+        opening[i] += opening[i - 1]
+        closing[i] += closing[i - 1]
+
+    # Calculate the total overlapping shots for all players
+    overlapping = 0
+    for a,b in players:
+        overlapping += opening[b] - closing[a]
 
 
+    return overlapping
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
 
@@ -57,3 +64,4 @@ if __name__ == '__main__':
     fptr.write(str(result) + '\n')
 
     fptr.close()
+
